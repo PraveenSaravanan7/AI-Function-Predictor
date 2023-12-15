@@ -1,4 +1,4 @@
-// a = b + c + d;
+let startTraining = false;
 
 const xs = [
   [1, 2, 3],
@@ -7,11 +7,25 @@ const xs = [
   [3, 3, 3],
 ];
 
-const ys = [6, 3, 6, 9];
+const ys = [6, 3, 6, 9]; // a = b + c + d;
+
+const yCells = [];
+
+xs.forEach((x, i) => {
+  const row = table.insertRow(i + 1);
+  const cell1 = row.insertCell(0);
+  const cell2 = row.insertCell(1);
+  yCells.push(row.insertCell(2));
+
+  cell1.innerHTML = x.join(",");
+  cell2.innerHTML = ys[i];
+});
 
 const n = new MLP(3, [4, 4, 1]);
 
 const train = () => {
+  if (!startTraining) return;
+
   const ypred = xs.map((x) => n.call(x));
 
   let loss = Value.of(0);
@@ -23,16 +37,29 @@ const train = () => {
 
   loss.backward();
 
-  n.parameters().forEach((p) => (p.data += -0.005 * p.grad));
+  n.parameters().forEach((p) => (p.data += -learningRate.value * p.grad)); // Info: learningRate is html
 
-  ypred.forEach((y) => console.log(y.data));
-  console.log("%c" + loss.data, "color: red");
-  console.log(i);
+  lossText.innerHTML = loss.data;
+  ypred.forEach((y, i) => {
+    yCells[i].innerHTML = y.data;
+  });
+
+  requestAnimationFrame(train);
 
   return loss.data;
 };
 
-let l = train();
+const onButtonPress = () => {
+  startTraining = !startTraining;
 
-var i = 4000;
-while (i-- && l > 0.5) l = train();
+  button.innerHTML = startTraining ? "Stop" : "Start";
+  button.style.backgroundColor = startTraining ? "red" : "white";
+  learningRate.disabled = startTraining;
+
+  train();
+};
+
+// let l = train();
+
+// var i = 4000;
+// while (i-- && l > 0.5) l = train();

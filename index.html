@@ -4,9 +4,51 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AI | Function Predictor | No BlackBox</title>
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+    </style>
   </head>
   <body style="background-color: black; color: white">
-    <h1>AI | Function Predictor | No BlackBox</h1>
+    <h1>AI Function Predictor | No BlackBox</h1>
+    <h3>Neural network implemented from scratch in JS</h3>
+    <button
+      style="width: 100px; height: 60px; font-size: large"
+      id="button"
+      onclick="onButtonPress()"
+    >
+      Start
+    </button>
+
+    <span
+      >Learning rate: <input type="number" id="learningRate" value="0.005"
+    /></span>
+
+    <h2>
+      Loss:
+      <span id="lossText">0</span>
+    </h2>
+
+    <table>
+      <tbody id="table">
+        <tr>
+          <th>Input</th>
+          <th>Actual Output</th>
+          <th>Prediction By The Model</th>
+        </tr>
+      </tbody>
+    </table>
+
     <script src="engine.js"></script>
     <script src="mlp.js"></script>
     <script src="index.js"></script>
