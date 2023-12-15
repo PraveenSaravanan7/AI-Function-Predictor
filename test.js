@@ -1,22 +1,25 @@
-const n = new Neuron(2, false);
+// const n = new Neuron(2, false);
 
-console.log(n);
+// console.log(n);
 
-const l = new Layer(2, 3, false);
+// const l = new Layer(2, 3, false);
 
-console.log(l);
+// console.log(l);
 
-const mlp = new MLP(2, [3, 1]);
+// const mlp = new MLP(2, [3, 1]);
 
-console.log(mlp);
+// console.log(mlp);
+
+// a = Value.of(1);
+// b = Value.of(2);
+// c = a.mul(b);
+// d = Value.of(5);
+// e = c.add(d);
+
+// console.log(e);
 
 a = Value.of(1);
 b = Value.of(2);
-c = a.mul(b);
-d = Value.of(5);
-e = c.add(d);
-
-console.log(e);
 
 // e = c * d;
 // e = (a + b) * d;

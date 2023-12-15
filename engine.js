@@ -76,6 +76,16 @@ class Value {
     for (const v of topo.reverse()) v._backward();
   }
 
+  neg() {
+    return this.mul(-1);
+  }
+
+  sub(other) {
+    other = other instanceof Value ? other : new Value(other);
+
+    return this.add(other.neg());
+  }
+
   static of(...args) {
     return new Value(...args);
   }
