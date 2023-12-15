@@ -23,11 +23,11 @@
     <h1>AI Function Predictor | No BlackBox</h1>
     <h3>Neural network implemented from scratch in JS</h3>
     <button
-      style="width: 100px; height: 60px; font-size: large"
+      style="width: 160px; height: 60px; font-size: large"
       id="button"
       onclick="onButtonPress()"
     >
-      Start
+      Start Training
     </button>
 
     <span
@@ -49,9 +49,24 @@
       </tbody>
     </table>
 
+    <h1>Pre-trained Model (Training Loss: 0.0001)</h1>
+    <table>
+      <tbody id="pretrainedTable">
+        <tr>
+          <th>Input</th>
+          <th>Expected Output</th>
+          <th>Prediction By The Model</th>
+        </tr>
+      </tbody>
+    </table>
+
     <script src="engine.js"></script>
     <script src="mlp.js"></script>
     <script src="index.js"></script>
+
+    <script src="checkpoint_0.00001.js"></script>
+    <script src="pretrained.js"></script>
+
     <!-- <script src="test.js"></script> -->
   </body>
 </html>

@@ -52,7 +52,7 @@ const train = () => {
 const onButtonPress = () => {
   startTraining = !startTraining;
 
-  button.innerHTML = startTraining ? "Stop" : "Start";
+  button.innerHTML = startTraining ? "Pause Training" : "Start Training";
   button.style.backgroundColor = startTraining ? "red" : "white";
   learningRate.disabled = startTraining;
 
