@@ -14,8 +14,8 @@ class Value {
     const output = new Value(this.data + other.data, [this, other], "+");
 
     output._backward = () => {
-      this.grad += output.grad;
-      other.grad += output.grad;
+      this.grad += 1 * output.grad; // Info: output.grad is multiplied bcs of chain rule
+      other.grad += 1 * output.grad;
     };
 
     return output;
@@ -29,6 +29,16 @@ class Value {
     output._backward = () => {
       this.grad += other.data * output.grad;
       other.grad += this.data * output.grad;
+    };
+
+    return output;
+  }
+
+  pow(other) {
+    const output = new Value(this.data ** other, [this], `**{${other}}`);
+
+    output._backward = () => {
+      this.grad += other * this.data ** (other - 1) * output.grad;
     };
 
     return output;
