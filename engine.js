@@ -14,8 +14,10 @@ class Value {
     const output = new Value(this.data + other.data, [this, other], "+");
 
     output._backward = () => {
-      this.grad += 1 * output.grad; // Info: output.grad is multiplied bcs of chain rule
+      this.grad += 1 * output.grad;
       other.grad += 1 * output.grad;
+      // Info: output.grad is multiplied bcs of chain rule
+      // Info: += is used because the value can be used more that once in the same equation
     };
 
     return output;
