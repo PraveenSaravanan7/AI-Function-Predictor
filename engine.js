@@ -1,5 +1,3 @@
-const ValueOf = (...args) => new Value(...args);
-
 class Value {
   constructor(data, children = [], operation = "") {
     this.data = data;
@@ -13,7 +11,7 @@ class Value {
   add(other) {
     other = other instanceof Value ? other : new Value(other);
 
-    const output = ValueOf(this.data + other.data, [this, other], "+");
+    const output = new Value(this.data + other.data, [this, other], "+");
 
     output._backward = () => {
       this.grad += output.grad;
@@ -32,6 +30,12 @@ class Value {
       this.grad += other.data * output.grad;
       other.grad += this.data * output.grad;
     };
+
+    return output;
+  }
+
+  relu() {
+    const output = new Value(this.data < 0 ? 0 : this.data, [this], "ReLU");
 
     return output;
   }
@@ -58,5 +62,9 @@ class Value {
     this.grad = 1;
 
     for (const v of topo.reverse()) v._backward();
+  }
+
+  static of(...args) {
+    return new Value(...args);
   }
 }

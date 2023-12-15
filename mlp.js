@@ -13,18 +13,20 @@ class Module {
 class Neuron extends Module {
   constructor(nin, nonlin = true) {
     super();
-    this.w = Array.from({ length: nin }, () => ValueOf(Math.random() * 2 - 1)); // Btw -1 & 1
-    this.b = ValueOf(0);
+    this.w = Array.from(
+      { length: nin },
+      () => new Value(Math.random() * 2 - 1)
+    ); // Btw -1 & 1
+    this.b = new Value(0);
     this.nonlin = nonlin;
   }
 
   call(x) {
     const activation = this.w
-      .reduce((sum, wi, i) => sum.add(wi.mul(x[i])), ValueOf(0))
+      .reduce((sum, wi, i) => sum.add(wi.mul(x[i])), new Value(0))
       .add(this.b);
 
-    return activation;
-    // return this.nonlin ? activation.relu() : activation; // TODO: uncomment after Value implementation
+    return this.nonlin ? activation.relu() : activation;
   }
 
   parameters() {
@@ -78,10 +80,12 @@ class MLP extends Module {
   }
 
   call(x) {
-    x = x.map((i) => ValueOf(i));
-    for (const layer of this.layers) {
-      x = layer.call(x);
-    }
+    x = x.map((i) => new Value(i));
+
+    for (const layer of this.layers) x = layer.call(x);
+
+    if (x.length === 1) return x[0];
+
     return x;
   }
 

@@ -10,10 +10,10 @@ const mlp = new MLP(2, [3, 1]);
 
 console.log(mlp);
 
-a = ValueOf(1);
-b = ValueOf(2);
+a = Value.of(1);
+b = Value.of(2);
 c = a.mul(b);
-d = ValueOf(5);
+d = Value.of(5);
 e = c.add(d);
 
 console.log(e);
@@ -25,4 +25,4 @@ console.log(e);
 // del of d = 3
 // del of c = 5
 // del of b = 1 x 5 = 5
-// del of a = 
+// del of a =
