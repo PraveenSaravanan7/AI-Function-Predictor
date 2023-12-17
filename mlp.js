@@ -84,8 +84,6 @@ class MLP extends Module {
 
     for (const layer of this.layers) x = layer.call(x);
 
-    if (x.length === 1) return x[0];
-
     return x;
   }
 

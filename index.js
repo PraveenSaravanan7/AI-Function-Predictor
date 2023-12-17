@@ -7,7 +7,7 @@ const xs = [
   [3, 3, 3],
 ];
 
-const ys = [6, 3, 6, 9]; // a = b + c + d;
+const ys = [[6], [3], [6], [9]]; // a = b + c + d;
 
 const yCells = [];
 
@@ -18,7 +18,7 @@ xs.forEach((x, i) => {
   yCells.push(row.insertCell(2));
 
   cell1.innerHTML = x.join(",");
-  cell2.innerHTML = ys[i];
+  cell2.innerHTML = ys[i].join(",");
 });
 
 const n = new MLP(3, [4, 4, 1]);
@@ -30,8 +30,14 @@ const train = () => {
 
   let loss = Value.of(0);
 
-  for (let i = 0; i < ys.length; i++)
-    loss = loss.add(ypred[i].sub(ys[i]).pow(2));
+  for (let i = 0; i < ys.length; i++) {
+    const actual = ys[i];
+    const prediction = ypred[i];
+
+    for (let j = 0; j < prediction.length; j++) {
+      loss = loss.add(prediction[j].sub(actual[j]).pow(2));
+    }
+  }
 
   n.zeroGrad();
 
@@ -40,8 +46,8 @@ const train = () => {
   n.parameters().forEach((p) => (p.data += -learningRate.value * p.grad)); // Info: learningRate is html
 
   lossText.innerHTML = loss.data;
-  ypred.forEach((y, i) => {
-    yCells[i].innerHTML = y.data;
+  yCells.forEach((cell, i) => {
+    cell.innerHTML = ypred[i].map((y) => y.data).join(",");
   });
 
   requestAnimationFrame(train);
