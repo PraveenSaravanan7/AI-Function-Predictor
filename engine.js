@@ -52,6 +52,18 @@ class Value {
     return output;
   }
 
+  tanh() {
+    const x = this.data;
+    const t = (Math.exp(2 * x) - 1) / (Math.exp(2 * x) + 1);
+    const output = new Value(t, [this], `tanh`);
+
+    output._backward = () => {
+      this.grad += (1 - t ** 2) * output.grad;
+    };
+
+    return output;
+  }
+
   backward() {
     const topo = [];
     const visited = new Set();

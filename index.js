@@ -1,13 +1,15 @@
 let startTraining = false;
 
-const xs = [
-  [1, 2, 3],
-  [1, 1, 1],
-  [2, 2, 2],
-  [3, 3, 3],
-];
+// const xs = [
+//   [1, 2, 3],
+//   [1, 1, 1],
+//   [2, 2, 2],
+//   [3, 3, 3],
+// ];
 
-const ys = [[6], [3], [6], [9]]; // a = b + c + d;
+// const ys = [[6], [3], [6], [9]]; // a = b + c + d;
+
+const [xs, ys] = generateSampleData(10);
 
 const yCells = [];
 

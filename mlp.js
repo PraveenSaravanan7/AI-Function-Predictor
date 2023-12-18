@@ -26,7 +26,7 @@ class Neuron extends Module {
       .reduce((sum, wi, i) => sum.add(wi.mul(x[i])), new Value(0))
       .add(this.b);
 
-    return this.nonlin ? activation.relu() : activation;
+    return this.nonlin ? activation.tanh() : activation;
   }
 
   parameters() {
