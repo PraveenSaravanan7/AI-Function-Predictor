@@ -86,6 +86,12 @@ class Value {
     return this.add(other.neg());
   }
 
+  div(other) {
+    other = other instanceof Value ? other : new Value(other);
+
+    return this.mul(other.pow(-1));
+  }
+
   static of(...args) {
     return new Value(...args);
   }

@@ -37,6 +37,8 @@ const train = () => {
     for (let j = 0; j < prediction.length; j++) {
       loss = loss.add(prediction[j].sub(actual[j]).pow(2));
     }
+
+    loss = loss.div(ypred.length);
   }
 
   n.zeroGrad();
