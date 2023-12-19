@@ -1,15 +1,12 @@
 let startTraining = false;
 
-// const xs = [
-//   [1, 2, 3],
-//   [1, 1, 1],
-//   [2, 2, 2],
-//   [3, 3, 3],
-// ];
+const ctx = document.getElementById("trainingChart").getContext("2d");
+const ctx2 = document.getElementById("testingChart").getContext("2d");
 
-// const ys = [[6], [3], [6], [9]]; // a = b + c + d;
+const [xs, ys] = generateUnitCircleData(50);
 
-const [xs, ys] = generateSampleData(10);
+drawCircleChart(ctx, xs, ys);
+const testChart = drawCircleChart(ctx2);
 
 const yCells = [];
 
@@ -23,10 +20,29 @@ xs.forEach((x, i) => {
   cell2.innerHTML = ys[i].join(",");
 });
 
-const n = new MLP(3, [4, 4, 1]);
+const n = new MLP(1, [20, 20, 1]);
+
+const test = () => {
+  const [xs, ys] = generateUnitCircleData(10);
+
+  const ypred = xs.map((x) => n.call(x));
+
+  console.log(ypred);
+
+  const chartData = getChartData(xs, ypred);
+
+  console.log(chartData);
+
+  testChart.data.datasets.forEach((dataset) => {
+    dataset.data = chartData;
+  });
+
+  testChart.update();
+};
 
 const train = () => {
   if (!startTraining) return;
+  test();
 
   const ypred = xs.map((x) => n.call(x));
 
