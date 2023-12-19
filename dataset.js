@@ -137,6 +137,12 @@ const drawExorChart = (canvas, xs = [], ys = []) => {
   });
 };
 
+function isPointInsideCircle(cx, cy, radius, px, py) {
+  const distance = Math.sqrt(Math.pow(px - cx, 2) + Math.pow(py - cy, 2)); // dis between 2 points
+
+  return distance <= radius;
+}
+
 function generateCircleData(numPoints, noiseFactor = 0.1) {
   const xs = [];
   const ys = [];
@@ -145,9 +151,7 @@ function generateCircleData(numPoints, noiseFactor = 0.1) {
     const x1 = getRandomNumber(-5, 5);
     const x2 = getRandomNumber(-5, 5);
 
-    let y = 1;
-
-    if (x1 >= -2.5 && x1 <= 2.5 && x2 >= -2.5 && x2 <= 2.5) y *= -1;
+    let y = isPointInsideCircle(0, 0, 2.5, x1, x2) ? -1 : 1;
 
     xs.push([x1, x2]);
     ys.push([y]);
