@@ -3,7 +3,7 @@ let startTraining = false;
 const ctx = document.getElementById("trainingChart").getContext("2d");
 const ctx2 = document.getElementById("testingChart").getContext("2d");
 
-const [xs, ys] = generateUnitCircleData(50);
+const [xs, ys] = generateUnitCircleData(100);
 
 drawCircleChart(ctx, xs, ys);
 const testChart = drawCircleChart(ctx2);
@@ -20,10 +20,10 @@ xs.forEach((x, i) => {
   cell2.innerHTML = ys[i].join(",");
 });
 
-const n = new MLP(1, [20, 20, 1]);
+const n = new MLP(1, [4, 2, 1]);
 
 const test = () => {
-  const [xs, ys] = generateUnitCircleData(10);
+  const [xs, ys] = generateUnitCircleData(20);
 
   const ypred = xs.map((x) => n.call(x));
 
@@ -56,7 +56,7 @@ const train = () => {
       loss = loss.add(prediction[j].sub(actual[j]).pow(2));
     }
 
-    loss = loss.div(ypred.length);
+    // loss = loss.div(ypred.length);
   }
 
   n.zeroGrad();

@@ -50,6 +50,7 @@ const drawCircleChart = (canvas, xs = [], ys = []) => {
       ],
     },
     options: {
+      animation: false,
       scales: {
         x: {
           type: "linear",
