@@ -180,11 +180,25 @@ function generateGaussianData(numPoints, noiseFactor = 0.1) {
 
     xs.push([x1, x2]);
     ys.push([y]);
+  }
 
-    // if (y == 0) {
-    //   xs.pop();
-    //   ys.pop();
-    // }
+  return [xs, ys];
+}
+
+function generateLineData(numPoints, noiseFactor = 0.1) {
+  const xs = [];
+  const ys = [];
+
+  for (let i = 0; i < numPoints; i++) {
+    const x1 = getRandomNumber(-5, 5);
+    const x2 = getRandomNumber(-5, 5);
+
+    let y = Math.abs(x1 - x2 * -1) < 0.5 ? 1 : 0;
+
+    if (x1 < 0) y *= -1;
+
+    xs.push([x1, x2]);
+    ys.push([y]);
   }
 
   return [xs, ys];

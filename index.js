@@ -3,7 +3,7 @@ let startTraining = false;
 const ctx = document.getElementById("trainingChart").getContext("2d");
 const ctx2 = document.getElementById("testingChart").getContext("2d");
 
-const [xs, ys] = generateGaussianData(200);
+const [xs, ys] = generateLineData(200);
 
 drawExorChart(ctx, xs, ys);
 const testChart = drawExorChart(ctx2);
@@ -23,7 +23,7 @@ xs.forEach((x, i) => {
 const n = new MLP(2, [4, 2, 1]);
 
 const test = () => {
-  const [xs, ys] = generateGaussianData(100);
+  const [xs, ys] = generateLineData(100);
 
   const ypred = xs.map((x) => n.call(x));
 
