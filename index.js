@@ -3,7 +3,7 @@ let startTraining = false;
 const ctx = document.getElementById("trainingChart").getContext("2d");
 const ctx2 = document.getElementById("testingChart").getContext("2d");
 
-const [xs, ys] = generateExorData(100);
+const [xs, ys] = generateExorData(200);
 
 drawExorChart(ctx, xs, ys);
 const testChart = drawExorChart(ctx2);
