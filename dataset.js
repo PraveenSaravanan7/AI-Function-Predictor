@@ -110,7 +110,11 @@ const drawExorChart = (canvas, xs = [], ys = []) => {
             const index = context.dataIndex;
             const value = ys[index]?.at(0);
 
-            return value < 0 ? "rgba(192, 75, 95, 1)" : "rgba(75, 192, 192, 1)";
+            const alpha = Math.abs(value);
+
+            return value < 0
+              ? `rgba(192, 75, 95, ${alpha})`
+              : `rgba(75, 192, 192, ${alpha})`;
           },
           pointRadius: 4,
           pointHoverRadius: 8,
@@ -155,6 +159,32 @@ function generateCircleData(numPoints, noiseFactor = 0.1) {
 
     xs.push([x1, x2]);
     ys.push([y]);
+  }
+
+  return [xs, ys];
+}
+
+function generateGaussianData(numPoints, noiseFactor = 0.1) {
+  const xs = [];
+  const ys = [];
+
+  for (let i = 0; i < numPoints; i++) {
+    const x1 = getRandomNumber(-5, 5);
+    const x2 = getRandomNumber(-5, 5);
+
+    let y = isPointInsideCircle(-2.5, -2.5, 1.5, x1, x2)
+      ? -1
+      : isPointInsideCircle(2.5, 2.5, 1.5, x1, x2)
+      ? 1
+      : 0;
+
+    xs.push([x1, x2]);
+    ys.push([y]);
+
+    // if (y == 0) {
+    //   xs.pop();
+    //   ys.pop();
+    // }
   }
 
   return [xs, ys];

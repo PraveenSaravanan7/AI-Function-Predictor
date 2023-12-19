@@ -3,7 +3,7 @@ let startTraining = false;
 const ctx = document.getElementById("trainingChart").getContext("2d");
 const ctx2 = document.getElementById("testingChart").getContext("2d");
 
-const [xs, ys] = generateCircleData(200);
+const [xs, ys] = generateGaussianData(200);
 
 drawExorChart(ctx, xs, ys);
 const testChart = drawExorChart(ctx2);
@@ -23,7 +23,7 @@ xs.forEach((x, i) => {
 const n = new MLP(2, [4, 2, 1]);
 
 const test = () => {
-  const [xs, ys] = generateCircleData(100);
+  const [xs, ys] = generateGaussianData(100);
 
   const ypred = xs.map((x) => n.call(x));
 
@@ -31,11 +31,13 @@ const test = () => {
 
   testChart.data.datasets.forEach((dataset) => {
     dataset.data = chartData;
-    dataset.backgroundColor = ypred.map(([y]) =>
-      y.data < 0
-        ? `rgba(192, 75, 95, ${Math.abs(y.data)})`
-        : `rgba(75, 192, 192, ${Math.abs(y.data)})`
-    );
+    dataset.backgroundColor = ypred.map(([y]) => {
+      const alpha = Math.abs(y.data);
+
+      return y.data < 0
+        ? `rgba(192, 75, 95, ${alpha})`
+        : `rgba(75, 192, 192, ${alpha})`;
+    });
   });
 
   testChart.update();
