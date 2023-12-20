@@ -1,15 +1,14 @@
 let startTraining = false;
 
-// const xs = [
-//   [1, 2, 3],
-//   [1, 1, 1],
-//   [2, 2, 2],
-//   [3, 3, 3],
-// ];
+const ctx = document.getElementById("trainingChart").getContext("2d");
+const ctx2 = document.getElementById("testingChart").getContext("2d");
 
-// const ys = [[6], [3], [6], [9]]; // a = b + c + d;
+const generateData = generateCircleData;
 
-const [xs, ys] = generateSampleData(10);
+const [xs, ys] = generateData(200);
+
+drawChart(ctx, xs, ys);
+const testChart = drawChart(ctx2);
 
 const yCells = [];
 
@@ -23,10 +22,32 @@ xs.forEach((x, i) => {
   cell2.innerHTML = ys[i].join(",");
 });
 
-const n = new MLP(3, [4, 4, 1]);
+const n = new MLP(2, [4, 2, 1]);
+
+const test = () => {
+  const [xs, ys] = generateData(100);
+
+  const ypred = xs.map((x) => n.call(x));
+
+  const chartData = getChartData(xs, ypred);
+
+  testChart.data.datasets.forEach((dataset) => {
+    dataset.data = chartData;
+    dataset.backgroundColor = ypred.map(([y]) => {
+      const alpha = Math.abs(y.data);
+
+      return y.data < 0
+        ? `rgba(192, 75, 95, ${alpha})`
+        : `rgba(75, 192, 192, ${alpha})`;
+    });
+  });
+
+  testChart.update();
+};
 
 const train = () => {
   if (!startTraining) return;
+  test();
 
   const ypred = xs.map((x) => n.call(x));
 
@@ -40,7 +61,7 @@ const train = () => {
       loss = loss.add(prediction[j].sub(actual[j]).pow(2));
     }
 
-    loss = loss.div(ypred.length);
+    // loss = loss.div(ypred.length);
   }
 
   n.zeroGrad();

@@ -8,7 +8,7 @@
       table {
         font-family: arial, sans-serif;
         border-collapse: collapse;
-        width: 100%;
+        width: 50%;
       }
 
       td,
@@ -17,7 +17,15 @@
         text-align: left;
         padding: 8px;
       }
+
+      #chart-wrapper {
+        display: inline-block;
+        position: relative;
+        width: 400px;
+        height: 400px;
+      }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body style="background-color: black; color: white">
     <h1>AI Function Predictor | No BlackBox</h1>
@@ -31,13 +39,29 @@
     </button>
 
     <span
-      >Learning rate: <input type="number" id="learningRate" value="0.01"
+      >Learning rate: <input type="number" id="learningRate" value="0.001"
     /></span>
+    <!-- For circle 0.0001  -->
+    <!-- For exor 0.001 -->
 
     <h2>
-      Loss:
+      Training Loss:
       <span id="lossText">0</span>
     </h2>
+    <h2>
+      Testing Loss:
+      <span id="testingLossText">0</span>
+    </h2>
+
+    <div style="display: flex; flex-direction: row; column-gap: 50px">
+      <div id="chart-wrapper">
+        <canvas id="trainingChart" height="100" width="100"></canvas>
+      </div>
+
+      <div id="chart-wrapper">
+        <canvas id="testingChart" height="100" width="100"></canvas>
+      </div>
+    </div>
 
     <table>
       <tbody id="table">
@@ -49,24 +73,13 @@
       </tbody>
     </table>
 
-    <h1>Pre-trained Model (Training Loss: 7e-10)</h1>
-    <table>
-      <tbody id="pretrainedTable">
-        <tr>
-          <th>Input</th>
-          <th>Expected Output</th>
-          <th>Prediction By The Model</th>
-        </tr>
-      </tbody>
-    </table>
-
-    <script src="utlis.js"></script>
+    <script src="dataset.js"></script>
     <script src="engine.js"></script>
     <script src="mlp.js"></script>
     <script src="index.js"></script>
 
-    <script src="checkpoint_lowest.js"></script>
-    <script src="pretrained.js"></script>
+    <!-- <script src="checkpoint_lowest.js"></script> -->
+    <!-- <script src="pretrained.js"></script> -->
 
     <!-- <script src="test.js"></script> -->
   </body>

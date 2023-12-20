@@ -1,0 +1,146 @@
+const DATASET_TYPES = Object.freeze({
+  EXOR: "EXOR",
+  CIRCLE: "CIRCLE",
+  GAUSSIAN: "GAUSSIAN",
+  LINE: "LINE",
+});
+
+let neuralNetwork = new MLP(2, [4, 2, 1]);
+let trainingChart;
+let generateData;
+let xs, ys; // Info: Training data
+let startTraining = false;
+let epoch = 0;
+const testingChart = drawChart(
+  testingChartCtx,
+  [],
+  [],
+  "Prediction by the model"
+);
+
+function formatNumberWithCommas(number, numberOfDigits = 6) {
+  const formattedNumber = number.toLocaleString("en-US", {
+    minimumIntegerDigits: numberOfDigits,
+  });
+
+  return formattedNumber.padStart(numberOfDigits, "0");
+}
+
+const drawTrainingChart = (datasetType) => {
+  trainingChart?.destroy();
+
+  generateData = (() => {
+    if (datasetType === DATASET_TYPES.EXOR) return generateExorData;
+    if (datasetType === DATASET_TYPES.CIRCLE) return generateCircleData;
+    if (datasetType === DATASET_TYPES.GAUSSIAN) return generateGaussianData;
+    if (datasetType === DATASET_TYPES.LINE) return generateLineData;
+  })();
+
+  [xs, ys] = generateData(200);
+
+  trainingChart = drawChart(trainingChartCtx, xs, ys, "Training dataset");
+};
+
+const onDatasetSelect = (element, datasetType) => {
+  for (let item of document.getElementsByClassName("chartType"))
+    item.classList.remove("active");
+
+  element.classList.add("active");
+  drawTrainingChart(datasetType);
+  reset();
+};
+
+drawTrainingChart(DATASET_TYPES.EXOR);
+
+const onPlayButtonPress = () => {
+  startTraining = !startTraining;
+
+  learningRate.disabled = startTraining;
+  activationType.disabled = startTraining;
+  playButton.innerHTML = startTraining
+    ? `<div class="pause">&#9208;</div>`
+    : `<div class="play">&#9654;</div>`;
+
+  if (startTraining) train();
+};
+
+const test = () => {
+  const [xs, ys] = generateData(200);
+
+  const yPred = xs.map((x) => neuralNetwork.call(x));
+
+  const chartData = getChartData(xs, yPred);
+
+  testingChart.data.datasets.forEach((dataset) => {
+    dataset.data = chartData;
+    dataset.backgroundColor = yPred.map(([y]) => {
+      const alpha = Math.abs(y.data);
+
+      return y.data < 0
+        ? `rgba(192, 75, 95, ${alpha})`
+        : `rgba(75, 192, 192, ${alpha})`;
+    });
+  });
+
+  testingChart.update();
+
+  let loss = 0;
+
+  for (let j = 0; j < yPred.length; j++)
+    loss += (yPred[j][0].data - ys[j][0]) ** 2;
+
+  testingLossText.innerHTML = loss;
+};
+
+const train = () => {
+  if (!startTraining) return;
+
+  test();
+
+  const yPred = xs.map((x) => neuralNetwork.call(x));
+
+  let loss = Value.of(0);
+
+  for (let i = 0; i < ys.length; i++) {
+    const actual = ys[i];
+    const prediction = yPred[i];
+
+    for (let j = 0; j < prediction.length; j++)
+      loss = loss.add(prediction[j].sub(actual[j]).pow(2));
+
+    // loss = loss.div(yPred.length); // Info: Since the loss is low
+  }
+
+  neuralNetwork.zeroGrad();
+
+  loss.backward();
+
+  neuralNetwork
+    .parameters()
+    .forEach((p) => (p.data += -learningRate.value * p.grad));
+
+  epoch++;
+  epochText.innerHTML = formatNumberWithCommas(epoch);
+  trainingLossText.innerHTML = loss.data;
+
+  requestAnimationFrame(train);
+
+  return loss.data;
+};
+
+const reset = () => {
+  if (startTraining) onPlayButtonPress();
+
+  testingChart.data.datasets.forEach((dataset) => {
+    dataset.data = [];
+  });
+
+  testingChart.update();
+
+  neuralNetwork = new MLP(2, [4, 2, 1]);
+
+  epoch = 0;
+  epochText.innerHTML = formatNumberWithCommas(epoch);
+  trainingLossText.innerHTML = 0;
+  testingLossText.innerHTML = 0;
+};
