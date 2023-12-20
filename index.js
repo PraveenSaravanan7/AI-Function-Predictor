@@ -8,16 +8,18 @@ const DATASET_TYPES = Object.freeze({
 let neuralNetwork = new MLP(2, [4, 2, 1]);
 let trainingChart;
 let generateData;
-let xs, ys; // Info: Training data
+let xs = [];
+let ys = []; // Info: Training data
 let startTraining = false;
 let epoch = 0;
 const testingChart = drawChart(
   testingChartCtx,
-  [],
-  [],
+  xs,
+  ys,
   "Prediction by the model"
 );
 const lossChart = drawLossChart(lossChartCtx);
+let datasetType = DATASET_TYPES.EXOR;
 
 function formatNumberWithCommas(number, numberOfDigits = 6) {
   const formattedNumber = number.toLocaleString("en-US", {
@@ -27,7 +29,7 @@ function formatNumberWithCommas(number, numberOfDigits = 6) {
   return formattedNumber.padStart(numberOfDigits, "0");
 }
 
-const drawTrainingChart = (datasetType) => {
+const drawTrainingChart = () => {
   trainingChart?.destroy();
 
   generateData = (() => {
@@ -42,16 +44,15 @@ const drawTrainingChart = (datasetType) => {
   trainingChart = drawChart(trainingChartCtx, xs, ys, "Training dataset");
 };
 
-const onDatasetSelect = (element, datasetType) => {
+const onDatasetSelect = (element, type) => {
   for (let item of document.getElementsByClassName("chartType"))
     item.classList.remove("active");
 
+  datasetType = type;
   element.classList.add("active");
-  drawTrainingChart(datasetType);
+  drawTrainingChart();
   reset();
 };
-
-drawTrainingChart(DATASET_TYPES.EXOR);
 
 const onPlayButtonPress = () => {
   startTraining = !startTraining;
@@ -154,3 +155,10 @@ const reset = () => {
   lossChart.data.datasets.forEach((dataset) => (dataset.data = []));
   lossChart.update();
 };
+
+const refresh = () => {
+  reset();
+  drawTrainingChart();
+};
+
+drawTrainingChart();
