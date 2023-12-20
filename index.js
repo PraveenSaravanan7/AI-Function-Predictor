@@ -3,10 +3,12 @@ let startTraining = false;
 const ctx = document.getElementById("trainingChart").getContext("2d");
 const ctx2 = document.getElementById("testingChart").getContext("2d");
 
-const [xs, ys] = generateLineData(200);
+const generateData = generateCircleData;
 
-drawExorChart(ctx, xs, ys);
-const testChart = drawExorChart(ctx2);
+const [xs, ys] = generateData(200);
+
+drawChart(ctx, xs, ys);
+const testChart = drawChart(ctx2);
 
 const yCells = [];
 
@@ -23,11 +25,11 @@ xs.forEach((x, i) => {
 const n = new MLP(2, [4, 2, 1]);
 
 const test = () => {
-  const [xs, ys] = generateLineData(100);
+  const [xs, ys] = generateData(100);
 
   const ypred = xs.map((x) => n.call(x));
 
-  const chartData = getChartDataForExor(xs, ypred);
+  const chartData = getChartData(xs, ypred);
 
   testChart.data.datasets.forEach((dataset) => {
     dataset.data = chartData;

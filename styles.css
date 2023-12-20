@@ -1,0 +1,136 @@
+body {
+  font-family: "Lato", sans-serif;
+  margin: 0;
+}
+
+.titleBanner {
+  color: white;
+  background-color: teal;
+  display: flex;
+  padding: 30px;
+  justify-content: center;
+  align-items: center;
+  font-size: xx-large;
+  font-weight: 300;
+}
+
+.toolBar {
+  display: flex;
+  padding: 24px 200px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  column-gap: 40px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.1);
+}
+
+.toolBarItem {
+  font-size: 16px;
+  font-weight: 300;
+  margin-bottom: 4px;
+}
+
+#epochText {
+  font-size: 24px;
+}
+
+input,
+select {
+  outline: 0;
+  border: 0;
+  font-size: 14px;
+  height: 26px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  min-width: 150px;
+}
+
+input:focus {
+  border-bottom: 1px solid rgba(128, 128, 128, 0.6);
+}
+
+#playButton {
+  width: 60px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  background-color: teal;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+  user-select: none;
+}
+
+#playButton > div.play {
+  transform: translate(2px, 1px);
+}
+
+#playButton > div.pause {
+  transform: translate(0px, 2px);
+  font-size: 40px;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: row;
+  column-gap: 60px;
+  padding: 40px;
+  justify-content: center;
+}
+
+.mainContainer > div {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.chartWrapper {
+  display: inline-block;
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+.chartTypesContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  column-gap: 8px;
+  margin-top: 10px;
+}
+
+.chartType {
+  padding: 4px;
+  text-align: center;
+  font-weight: 300;
+  font-size: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.chartType.active {
+  background-color: wheat;
+  font-weight: 500;
+}
+
+.chartTypesContainer img {
+  width: 70px;
+  height: 70px;
+}
+
+.lossContainer {
+  align-self: flex-start;
+  font-weight: 300;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+  font-size: 16px;
+}
+
+.lossContainer span {
+  font-weight: 500;
+  font-size: 16px;
+}
