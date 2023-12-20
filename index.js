@@ -20,6 +20,7 @@ const testingChart = drawChart(
 );
 const lossChart = drawLossChart(lossChartCtx);
 let datasetType = DATASET_TYPES.EXOR;
+const neuralNetworkCanvasCtx = neuralNetworkCtx.getContext("2d");
 
 function formatNumberWithCommas(number, numberOfDigits = 6) {
   const formattedNumber = number.toLocaleString("en-US", {
@@ -101,6 +102,7 @@ const train = (forceOnce = false) => {
   if (!startTraining && !forceOnce) return;
 
   test();
+  drawNetwork(neuralNetworkCanvasCtx, neuralNetwork);
 
   const yPred = xs.map((x) => neuralNetwork.call(x));
 
@@ -154,6 +156,8 @@ const reset = () => {
   lossChart.data.labels = [];
   lossChart.data.datasets.forEach((dataset) => (dataset.data = []));
   lossChart.update();
+
+  drawNetwork(neuralNetworkCanvasCtx, neuralNetwork);
 };
 
 const refresh = () => {
@@ -161,4 +165,5 @@ const refresh = () => {
   drawTrainingChart();
 };
 
+drawNetwork(neuralNetworkCanvasCtx, neuralNetwork);
 drawTrainingChart();
