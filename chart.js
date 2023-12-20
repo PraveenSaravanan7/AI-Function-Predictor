@@ -58,3 +58,30 @@ const drawChart = (canvas, xs = [], ys = [], title = "") => {
     },
   });
 };
+
+const drawLossChart = (canvas) =>
+  new Chart(canvas, {
+    type: "line",
+    data: {
+      labels: [],
+      datasets: [
+        {
+          label: "Training Loss",
+          data: [],
+          backgroundColor: "rgba(102, 50, 168, 0.2)",
+          borderColor: "rgba(102, 50, 168, 1)",
+          pointRadius: 0,
+        },
+        {
+          label: "Test Loss",
+          data: [],
+          backgroundColor: "rgba(255, 99, 132, 0.2)",
+          borderColor: "rgba(255, 99, 132, 1)",
+          pointRadius: 0,
+        },
+      ],
+    },
+    options: {
+      animation: false,
+    },
+  });

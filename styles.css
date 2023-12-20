@@ -16,7 +16,7 @@ body {
 
 .toolBar {
   display: flex;
-  padding: 24px 200px;
+  padding: 20px 200px;
   align-items: center;
   justify-content: center;
   flex-direction: row;
@@ -75,7 +75,7 @@ input:focus {
   display: flex;
   flex-direction: row;
   column-gap: 60px;
-  padding: 40px;
+  padding: 20px 40px;
   justify-content: center;
 }
 
@@ -128,9 +128,19 @@ input:focus {
   flex-direction: column;
   row-gap: 8px;
   font-size: 16px;
+  margin-top: 20px;
 }
 
 .lossContainer span {
   font-weight: 500;
   font-size: 16px;
+}
+
+.lossChartWrapper {
+  align-self: flex-start;
+  display: inline-block;
+  position: relative;
+  width: 400px;
+  height: 200px;
+  margin-top: 12px;
 }

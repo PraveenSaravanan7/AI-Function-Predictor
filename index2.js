@@ -17,6 +17,7 @@ const testingChart = drawChart(
   [],
   "Prediction by the model"
 );
+const lossChart = drawLossChart(lossChartCtx);
 
 function formatNumberWithCommas(number, numberOfDigits = 6) {
   const formattedNumber = number.toLocaleString("en-US", {
@@ -90,6 +91,9 @@ const test = () => {
     loss += (yPred[j][0].data - ys[j][0]) ** 2;
 
   testingLossText.innerHTML = loss;
+
+  lossChart.data.datasets[1].data.push(loss);
+  lossChart.update();
 };
 
 const train = () => {
@@ -123,6 +127,10 @@ const train = () => {
   epochText.innerHTML = formatNumberWithCommas(epoch);
   trainingLossText.innerHTML = loss.data;
 
+  lossChart.data.labels.push(epoch);
+  lossChart.data.datasets[0].data.push(loss.data);
+  lossChart.update();
+
   requestAnimationFrame(train);
 
   return loss.data;
@@ -131,9 +139,7 @@ const train = () => {
 const reset = () => {
   if (startTraining) onPlayButtonPress();
 
-  testingChart.data.datasets.forEach((dataset) => {
-    dataset.data = [];
-  });
+  testingChart.data.datasets.forEach((dataset) => (dataset.data = []));
 
   testingChart.update();
 
@@ -143,4 +149,8 @@ const reset = () => {
   epochText.innerHTML = formatNumberWithCommas(epoch);
   trainingLossText.innerHTML = 0;
   testingLossText.innerHTML = 0;
+
+  lossChart.data.labels = [];
+  lossChart.data.datasets.forEach((dataset) => (dataset.data = []));
+  lossChart.update();
 };
