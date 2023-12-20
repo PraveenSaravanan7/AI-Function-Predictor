@@ -62,13 +62,16 @@ input:focus {
   user-select: none;
 }
 
-#playButton > div.play {
-  transform: translate(2px, 1px);
+#playButton > span {
+  font-size: 36px;
 }
 
-#playButton > div.pause {
-  transform: translate(0px, 2px);
-  font-size: 40px;
+#playButton.play > span.pause {
+  display: none;
+}
+
+#playButton.pause > span.play {
+  display: none;
 }
 
 .mainContainer {
@@ -150,12 +153,22 @@ input:focus {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  column-gap: 12px;
+  column-gap: 8px;
 }
 
-#refresh {
+.smallButton {
   font-size: 36px;
   font-weight: 100;
-  color: rgba(0, 0, 0, 0.8);
   cursor: pointer;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+.smallButton:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }

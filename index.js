@@ -59,9 +59,9 @@ const onPlayButtonPress = () => {
 
   learningRate.disabled = startTraining;
   activationType.disabled = startTraining;
-  playButton.innerHTML = startTraining
-    ? `<div class="pause">&#9208;</div>`
-    : `<div class="play">&#9654;</div>`;
+
+  playButton.classList.add(startTraining ? "pause" : "play");
+  playButton.classList.remove(startTraining ? "play" : "pause");
 
   if (startTraining) train();
 };
@@ -97,8 +97,8 @@ const test = () => {
   lossChart.update();
 };
 
-const train = () => {
-  if (!startTraining) return;
+const train = (forceOnce = false) => {
+  if (!startTraining && !forceOnce) return;
 
   test();
 
@@ -132,7 +132,7 @@ const train = () => {
   lossChart.data.datasets[0].data.push(loss.data);
   lossChart.update();
 
-  requestAnimationFrame(train);
+  requestAnimationFrame(() => train());
 
   return loss.data;
 };
