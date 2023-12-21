@@ -26,7 +26,9 @@ class Neuron extends Module {
       .reduce((sum, wi, i) => sum.add(wi.mul(x[i])), new Value(0))
       .add(this.b);
 
-    return this.nonlin ? activation.tanh() : activation;
+    const type = activationType?.value || "tanh";
+
+    return this.nonlin ? activation[type]() : activation;
   }
 
   parameters() {
