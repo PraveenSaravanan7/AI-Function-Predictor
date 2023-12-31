@@ -10,64 +10,63 @@ const getY = (containerWidth, boxWidth, numberOfBoxes, index) => {
   return boxPosition;
 };
 
+const drawNeuron = (ctx, x, y, radius, color) => {
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 4;
+  ctx.stroke();
+};
+
+const drawConnection = (ctx, start, end, weight, offset) => {
+  const alpha = 0.2 + Math.abs(weight);
+
+  ctx.beginPath();
+  ctx.moveTo(start[0] + offset, start[1]);
+  ctx.lineTo(end[0] - offset, end[1]);
+  ctx.lineCap = "round";
+  ctx.lineWidth = 4 * (0.5 + alpha);
+  ctx.strokeStyle =
+    weight < 0 ? `rgba(192, 75, 95, ${alpha})` : `rgba(75, 192, 192, ${alpha})`;
+  ctx.stroke();
+};
+
 const drawNetwork = (ctx, network) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-  const margin = 50;
+  const margin = 100;
   const width = ctx.canvas.width - margin * 2;
-  const height = ctx.canvas.height - margin * 2;
 
   const left = margin;
   const top = margin;
-  const bottom = top + height;
-  const right = left + width;
 
   const layerWidth = width / (network.layers.length - 1);
+  const circleRadius = 52;
 
-  const points = [];
-
-  const circleRadius = 26;
+  let prevPoints = [];
+  let currentPoints = [];
 
   for (let i = 0; i < network.layers.length; i++) {
-    const layer = network.layers[i].neurons;
-    points[i] = [];
+    const noOfNeurons = network.layers[i].neurons.length;
 
-    for (let j = 0; j < layer.length; j++) {
+    for (let j = 0; j < noOfNeurons; j++) {
       const x = left + i * layerWidth;
-      const y = top + j * 84;
+      const y = top + j * circleRadius * 3;
 
-      points[i].push([x, y]);
+      currentPoints.push([x, y]);
 
-      ctx.beginPath();
-      ctx.arc(x, y, circleRadius, 0, Math.PI * 2);
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-    }
-  }
+      drawNeuron(ctx, x, y, circleRadius, "black");
 
-  for (let i = points.length - 1; i > 0; i--) {
-    const outputs = points[i];
-    const inputs = points[i - 1];
+      if (i > 0) {
+        for (let k = 0; k < prevPoints.length; k++) {
+          const w = network.layers[i].neurons[j].w[k].data;
 
-    for (let x = 0; x < outputs.length; x++) {
-      for (let y = 0; y < inputs.length; y++) {
-        const a = outputs[x];
-        const b = inputs[y];
-        const w = network.layers[i].neurons[x].w[y].data;
-        const alpha = 0.2 + Math.abs(w);
-
-        ctx.beginPath();
-        ctx.moveTo(a[0] - circleRadius, a[1]);
-        ctx.lineTo(b[0] + circleRadius, b[1]);
-        ctx.lineCap = "round";
-        ctx.lineWidth = 2;
-        ctx.strokeStyle =
-          w < 0
-            ? `rgba(192, 75, 95, ${alpha})`
-            : `rgba(75, 192, 192, ${alpha})`;
-        ctx.stroke();
+          drawConnection(ctx, prevPoints[k], [x, y], w, circleRadius);
+        }
       }
     }
+
+    prevPoints = currentPoints;
+    currentPoints = [];
   }
 };

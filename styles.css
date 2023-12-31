@@ -172,3 +172,8 @@ input:focus {
 .smallButton:hover {
   background-color: rgba(0, 0, 0, 0.1);
 }
+
+#neuralNetworkCtx {
+  width: 500px;
+  height: 500px;
+}
